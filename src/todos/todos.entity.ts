@@ -1,5 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { Injectable } from '@nestjs/common';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { UsersEntity } from "../users/users.entity";
 
 @Entity()
 export class TodosEntity {
@@ -14,4 +14,7 @@ export class TodosEntity {
 
   @Column({ default: false })
   state: boolean;
+
+  @ManyToOne(() => UsersEntity, user => user.todos)
+  user: UsersEntity;
 }
