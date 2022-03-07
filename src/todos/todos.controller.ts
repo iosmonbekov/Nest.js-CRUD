@@ -1,15 +1,19 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put, Req, UseGuards } from "@nestjs/common";
 import { TodosService } from './todos.service';
 import { TodoDto } from './dto/todo.dto';
 import { TodosEntity } from "./todos.entity";
+import { JwtAuthGuard } from "../auth/jwt-auth.guard";
+import { Request } from "express";
 
 @Controller('todos')
 export class TodosController {
   constructor(private readonly todosService: TodosService) {}
 
   @Get()
-  getAllTodos(): Promise<TodosEntity[]> {
-    return this.todosService.getAllTodos();
+  @UseGuards(JwtAuthGuard)
+  getAllTodos(@Req() request: Request): Promise<TodosEntity[]> {
+    const userId = Number(request.headers.userId);
+    return this.todosService.getAllTodos(userId);
   }
 
   @Get('/:id')

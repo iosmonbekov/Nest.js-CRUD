@@ -11,8 +11,8 @@ export class TodosService {
     private todoRepository: Repository<TodosEntity>,
   ) {}
 
-  getAllTodos(): Promise<TodosEntity[]> {
-    return this.todoRepository.find();
+  getAllTodos(userId: number): Promise<TodosEntity[]> {
+    return this.todoRepository.find({ where: { user: userId }});
   }
 
   createTodo(todoDto: TodoDto): Promise<TodosEntity> {
